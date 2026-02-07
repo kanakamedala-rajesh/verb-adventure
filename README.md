@@ -44,6 +44,20 @@
 4. **Open your browser:**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
+## 🌐 Deployment
+
+This project is optimized for deployment on **[Vercel](https://vercel.com)**. Vercel's free tier (Hobby) fully supports the Server Actions used for the AI "Magic Hint" feature.
+
+### Deploy to Vercel
+
+1. **Push your code** to a GitHub, GitLab, or Bitbucket repository.
+2. **Import the project** in the [Vercel Dashboard](https://vercel.com/new).
+3. **Set Environment Variables**: In the Vercel dashboard, add the following key:
+   - `GEMINI_API_KEY`: Your Google AI API key.
+4. **Click Deploy**!
+
+*Note: Deployment to platforms like Firebase Hosting (Free Tier) is not recommended as they do not support the Server-Side Rendering (SSR) required for the AI features.*
+
 ## 🧙 Why Verb Adventure?
 
 Traditional verb lists can be boring. Verb Adventure turns learning into a quest, making it easier to remember those tricky irregular forms through repetition, visual feedback, and auditory learning.
