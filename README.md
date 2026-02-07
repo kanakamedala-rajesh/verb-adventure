@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Verb Adventure: Master Irregular Verbs
 
-## Getting Started
+**Verb Adventure** is a fun, interactive web application designed to help learners of all ages master English irregular verbs through engaging gameplay and active practice.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Quick Play:** Practice with all available verbs in a fast-paced environment.
+- **Challenges:** Choose your difficulty and test your knowledge with a set number of questions.
+- **Flashcards & Study Mode:** Learn the verbs at your own pace with interactive study materials.
+- **Multiple Question Types:**
+  - **Fill-in-the-Blanks:** Type the correct simple past and past participle forms.
+  - **Multiple Choice:** Choose the correct form from several options.
+  - **True or False:** Quickly decide if the displayed verb forms are correct.
+- **Audio Support:** Listen to the pronunciation of verbs to improve your speaking skills.
+- **Visual Rewards:** Earn ranks and celebrate your progress with fun animations!
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Built With
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **[Next.js](https://nextjs.org/)** (App Router)
+- **[Tailwind CSS](https://tailwindcss.com/)** for styling
+- **[Framer Motion](https://www.framer.com/motion/)** for smooth animations
+- **[Lucide React](https://lucide.dev/)** for beautiful icons
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Getting Started
 
-## Learn More
+1. **Clone the repository:**
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   git clone https://github.com/your-username/verb-adventure.git
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Install dependencies:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. **Run the development server:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Open your browser:**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🧙 Why Verb Adventure?
+
+Traditional verb lists can be boring. Verb Adventure turns learning into a quest, making it easier to remember those tricky irregular forms through repetition, visual feedback, and auditory learning.
+
+---
+*Created with ❤️ for learners everywhere.*
