@@ -25,6 +25,10 @@ export const metadata: Metadata = {
   title: "Verb Adventure | Master Irregular Verbs!",
   description: "Join the quest to master English verbs through fun games and magic tricks!",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/logo.svg",
+    apple: "/logo.svg",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
