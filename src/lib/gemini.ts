@@ -3,14 +3,14 @@
 import { logger } from './logger';
 import { headers } from 'next/headers';
 
-const apiKey = process.env.GEMINI_API_KEY;
-
 // Simple in-memory cooldown to prevent abuse
 // In a distributed production env, use Redis or similar.
 const lastCallTimestamps = new Map<string, number>();
 const COOLDOWN_MS = 2000; // 2 second cooldown per session/ip (simulated here)
 
 export async function callGemini(prompt: string) {
+  const apiKey = process.env.GEMINI_API_KEY;
+
   if (!apiKey) {
     logger.error('GEMINI_API_KEY is not set in environment variables.');
     return 'AI is currently unavailable. Please check configuration.';
@@ -23,7 +23,8 @@ export async function callGemini(prompt: string) {
   const now = Date.now();
   const lastCall = lastCallTimestamps.get(ip) || 0;
   if (now - lastCall < COOLDOWN_MS) {
-    logger.warn('Gemini rate limit hit (cooldown active)', { ip });
+    const maskedIp = ip === 'unknown' ? 'unknown' : `${ip.split('.').slice(0, 2).join('.')}.x.x`;
+    logger.warn('Gemini rate limit hit (cooldown active)', { ip: maskedIp });
     return "Whoa there! I'm thinking as fast as I can. Please wait a moment.";
   }
   lastCallTimestamps.set(ip, now);

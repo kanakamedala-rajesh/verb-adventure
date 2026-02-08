@@ -9,12 +9,27 @@ const LogLevel = {
 
 type LogLevel = (typeof LogLevel)[keyof typeof LogLevel];
 
+const SENSITIVE_KEYS = ['ip', 'email', 'password', 'token', 'apiKey'];
+
+function sanitize(obj: Record<string, unknown>): Record<string, unknown> {
+  const sanitized = { ...obj };
+  for (const key of Object.keys(sanitized)) {
+    if (SENSITIVE_KEYS.includes(key)) {
+      sanitized[key] = '[REDACTED]';
+    } else if (typeof sanitized[key] === 'object' && sanitized[key] !== null) {
+      sanitized[key] = sanitize(sanitized[key] as Record<string, unknown>);
+    }
+  }
+  return sanitized;
+}
+
 function formatLog(level: LogLevel, message: string, context?: Record<string, unknown>) {
+  const safeContext = context ? sanitize(context) : undefined;
   return JSON.stringify({
     timestamp: new Date().toISOString(),
     level,
     message,
-    ...context,
+    ...safeContext,
   });
 }
 
