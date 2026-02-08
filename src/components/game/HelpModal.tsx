@@ -57,7 +57,7 @@ export const HelpModal = ({ isOpen, onClose }: HelpModalProps) => {
                   </li>
                   <li className="flex gap-3">
                     <span className="bg-green-100 text-green-600 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">3</span>
-                    <p><strong>Flashcards:</strong> Take your time to study each verb's forms and listen to their pronunciation.</p>
+                    <p><strong>Flashcards:</strong> Take your time to study each {"verb's"} forms and listen to their pronunciation.</p>
                   </li>
                 </ul>
               </section>
@@ -81,6 +81,23 @@ export const HelpModal = ({ isOpen, onClose }: HelpModalProps) => {
                     <span className="text-xs text-slate-500">Quick check</span>
                   </div>
                 </div>
+              </section>
+
+              <section className="space-y-3 border-t border-slate-100 pt-6">
+                <div className="flex items-center gap-2 text-blue-500">
+                  <Sparkles size={20} />
+                  <h3 className="font-heading uppercase text-lg">Pro Features</h3>
+                </div>
+                <ul className="space-y-4 text-slate-600 font-body text-sm">
+                  <li className="flex gap-3">
+                    <span className="bg-blue-100 p-1.5 rounded-lg flex items-center justify-center shrink-0">🚀</span>
+                    <p><strong>Installable:</strong> Add this to your home screen to use it just like a native app!</p>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="bg-green-100 p-1.5 rounded-lg flex items-center justify-center shrink-0">📶</span>
+                    <p><strong>Offline Play:</strong> Most features work without internet. Perfect for learning on the go!</p>
+                  </li>
+                </ul>
               </section>
 
               <section className="bg-yellow-50 p-6 rounded-3xl border-2 border-yellow-100 flex items-start gap-4">

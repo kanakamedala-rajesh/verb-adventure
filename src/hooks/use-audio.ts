@@ -23,6 +23,7 @@ export const useAudio = () => {
   useEffect(() => {
     const savedMuted = localStorage.getItem('verbMasterMuted');
     if (savedMuted !== null) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsMuted(JSON.parse(savedMuted));
     }
 
@@ -61,7 +62,7 @@ export const useAudio = () => {
   }, []);
 
   const toggleMute = useCallback(() => {
-    setIsMuted(prev => {
+    setIsMuted((prev: boolean) => {
       const next = !prev;
       localStorage.setItem('verbMasterMuted', JSON.stringify(next));
       return next;
@@ -83,13 +84,16 @@ export const useAudio = () => {
   const playSound = useCallback((type: 'pop' | 'correct' | 'incorrect' | 'streak' | 'win') => {
     if (isMuted) return;
     
-    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!AudioContextClass) return;
+    
+    const audioCtx = new AudioContextClass();
     const now = audioCtx.currentTime;
 
-    const createOsc = (freq: number, startTime: number, duration: number, type: OscillatorType = 'sine', volume = 0.2) => {
+    const createOsc = (freq: number, startTime: number, duration: number, oscType: OscillatorType = 'sine', volume = 0.2) => {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.type = type;
+      osc.type = oscType;
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.frequency.setValueAtTime(freq, startTime);
@@ -160,7 +164,7 @@ export const useAudio = () => {
     utterance.onerror = () => setIsSpeaking(false);
 
     window.speechSynthesis.speak(utterance);
-  }, [selectedVoiceURI, speed]);
+  }, []);
 
   return { 
     isMuted, 

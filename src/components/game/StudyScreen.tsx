@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, Star, Sparkles, ChevronLeft, ChevronRight, Home, Volume2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef } from 'react';
+import { Star, Sparkles, ChevronLeft, ChevronRight, Home, Volume2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { verbsData } from '@/lib/verbs';
 import { callGemini } from '@/lib/gemini';
 import { AIModal } from './AIModal';
 import { AudioControls } from '@/hooks/use-audio';
+import { useOnlineStatus } from '@/hooks/use-online-status';
 
 interface StudyScreenProps {
   onBack: () => void;
@@ -15,6 +16,7 @@ interface StudyScreenProps {
 }
 
 export const StudyScreen = ({ onBack, onSoundPop, audio }: StudyScreenProps) => {
+  const isOnline = useOnlineStatus();
   const { speak, isSpeaking } = audio;
   const [shuffledVerbs] = useState(() => {
     const data = [...verbsData];
@@ -35,10 +37,16 @@ export const StudyScreen = ({ onBack, onSoundPop, audio }: StudyScreenProps) => 
 
   const currentVerb = shuffledVerbs[currentIndex];
 
-  const handleGetExamples = async (e?: any, previousHint?: string) => {
+  const handleGetExamples = async (e?: React.MouseEvent | React.KeyboardEvent, previousHint?: string) => {
     if (e && e.stopPropagation) e.stopPropagation();
     onSoundPop();
     setModalOpen(true);
+
+    if (!isOnline) {
+      setAiLoading(false);
+      return;
+    }
+
     setAiLoading(true);
     
     // If regenerating, we clear content AFTER keeping the reference for the prompt
@@ -94,6 +102,7 @@ export const StudyScreen = ({ onBack, onSoundPop, audio }: StudyScreenProps) => 
         content={aiContent}
         title={`Word Magic: ${currentVerb.base}`}
         audio={audio}
+        isOffline={!isOnline}
       />
 
       {/* Playful Background Shapes */}

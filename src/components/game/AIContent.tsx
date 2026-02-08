@@ -21,7 +21,7 @@ export const AIContent = ({ content, audio }: AIContentProps) => {
         return JSON.parse(match[0]);
       }
       return null;
-    } catch (e) {
+    } catch {
       return null;
     }
   }, [content]);

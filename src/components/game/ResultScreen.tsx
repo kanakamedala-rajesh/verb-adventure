@@ -1,6 +1,6 @@
 'use client';
 
-import { RotateCcw, BookOpen, Home, Trophy, Star, Sparkles } from 'lucide-react';
+import { RotateCcw, BookOpen, Home, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getRank } from '@/lib/verbs';
 import { useState } from 'react';
@@ -18,7 +18,9 @@ interface ResultScreenProps {
   userName: string;
 }
 
-const Balloon = ({ delay, x }: { delay: number, x: string }) => (
+const BALLOON_TYPES = ['🎈', '🎈', '🎈', '✨', '⭐'];
+
+const Balloon = ({ delay, x, content }: { delay: number, x: string, content: string }) => (
   <motion.div
     initial={{ y: '110vh', opacity: 1 }}
     animate={{ y: '-10vh' }}
@@ -26,7 +28,7 @@ const Balloon = ({ delay, x }: { delay: number, x: string }) => (
     className="absolute text-6xl select-none pointer-events-none"
     style={{ left: x }}
   >
-    {['🎈', '🎈', '🎈', '✨', '⭐'][Math.floor(Math.random() * 5)]}
+    {content}
   </motion.div>
 );
 
@@ -34,12 +36,21 @@ export const ResultScreen = ({ score, total, onRestart, onHome, onReview, showCo
     const percentage = Math.round((score / total) * 100);
     const rank = getRank(percentage);
 
+    const [balloons] = useState(() => {
+      return [...Array(15)].map((_, i) => ({
+        id: i,
+        delay: i * 0.5,
+        x: `${Math.random() * 90}%`,
+        content: BALLOON_TYPES[Math.floor(Math.random() * BALLOON_TYPES.length)]
+      }));
+    });
+
     return (
     <div className="flex flex-col items-center justify-center p-4 sm:p-6 text-center min-h-screen relative overflow-hidden bg-blue-50">
         {showConfetti && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {[...Array(15)].map((_, i) => (
-              <Balloon key={i} delay={i * 0.5} x={`${Math.random() * 90}%`} />
+            {balloons.map((b) => (
+              <Balloon key={b.id} delay={b.delay} x={b.x} content={b.content} />
             ))}
           </div>
         )}

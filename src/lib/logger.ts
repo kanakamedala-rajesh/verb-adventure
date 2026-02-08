@@ -9,7 +9,7 @@ const LogLevel = {
 
 type LogLevel = typeof LogLevel[keyof typeof LogLevel];
 
-function formatLog(level: LogLevel, message: string, context?: Record<string, any>) {
+function formatLog(level: LogLevel, message: string, context?: Record<string, unknown>) {
   return JSON.stringify({
     timestamp: new Date().toISOString(),
     level,
@@ -19,13 +19,13 @@ function formatLog(level: LogLevel, message: string, context?: Record<string, an
 }
 
 export const logger = {
-  info: (message: string, context?: Record<string, any>) => {
+  info: (message: string, context?: Record<string, unknown>) => {
     console.log(formatLog(LogLevel.INFO, message, context));
   },
-  warn: (message: string, context?: Record<string, any>) => {
+  warn: (message: string, context?: Record<string, unknown>) => {
     console.warn(formatLog(LogLevel.WARN, message, context));
   },
-  error: (message: string, context?: Record<string, any>) => {
+  error: (message: string, context?: Record<string, unknown>) => {
     console.error(formatLog(LogLevel.ERROR, message, context));
   },
 };

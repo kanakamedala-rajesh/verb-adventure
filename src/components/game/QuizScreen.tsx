@@ -1,14 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Check, Trophy, ArrowRight, ArrowLeft, Grid, Sparkles, Flame, X, Star, ShieldAlert, Volume2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Check, ArrowRight, ArrowLeft, Grid, Sparkles, Flame, X, Star, Volume2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { AIModal } from './AIModal';
 import { FillInBlankQuestion, MultipleChoiceQuestion, TrueFalseQuestion } from './QuestionTypes';
 import { callGemini } from '@/lib/gemini';
 import { Question, Answer } from '@/lib/verbs';
 import { Mascot } from './Mascot';
 import { AudioControls } from '@/hooks/use-audio';
+import { useOnlineStatus } from '@/hooks/use-online-status';
 
 interface QuizScreenProps {
   questions: Question[];
@@ -45,6 +46,7 @@ export const QuizScreen = ({
   audio,
   userName
 }: QuizScreenProps) => {
+  const isOnline = useOnlineStatus();
   const { speak, isSpeaking } = audio;
   const currentQ = questions[currentIndex];
   const currentAnswer = allAnswers[currentIndex] || {};
@@ -60,6 +62,12 @@ export const QuizScreen = ({
   const handleGetMnemonic = async (previousHint?: string) => {
     onSoundPop();
     setModalOpen(true);
+    
+    if (!isOnline) {
+      setAiLoading(false);
+      return;
+    }
+
     setAiLoading(true);
     
     // Clear content after keeping reference for negative prompt
@@ -135,6 +143,7 @@ export const QuizScreen = ({
         content={aiContent}
         title={`Magic Hint for ${userName}!`}
         audio={audio}
+        isOffline={!isOnline}
       />
 
       {/* Header */}

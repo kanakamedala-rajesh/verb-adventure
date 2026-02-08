@@ -1,10 +1,11 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, Loader2, Check, RotateCcw } from 'lucide-react';
+import { X, Sparkles, Loader2, Check, RotateCcw, WifiOff } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { AIContent } from './AIContent';
 import { AudioControls } from '@/hooks/use-audio';
+import { Mascot } from './Mascot';
 
 interface AIModalProps {
   isOpen: boolean;
@@ -14,9 +15,10 @@ interface AIModalProps {
   loading: boolean;
   title: string;
   audio: AudioControls;
+  isOffline?: boolean;
 }
 
-export const AIModal = ({ isOpen, onClose, onRegenerate, content, loading, title, audio }: AIModalProps) => {
+export const AIModal = ({ isOpen, onClose, onRegenerate, content, loading, title, audio, isOffline }: AIModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Focus trap and Escape key
@@ -89,7 +91,22 @@ export const AIModal = ({ isOpen, onClose, onRegenerate, content, loading, title
             </div>
 
             <div className="flex-1 overflow-y-auto min-h-[100px] sm:min-h-[160px] bg-purple-50 rounded-[1.5rem] sm:rounded-[2rem] p-4 sm:p-6 border-4 border-white shadow-inner flex items-center justify-center custom-scrollbar relative">
-                {loading ? (
+                {isOffline ? (
+                  <div className="flex flex-col items-center gap-4 sm:gap-6 text-slate-500 py-4">
+                    <div className="scale-110 mb-2">
+                      <Mascot mood="neutral" />
+                    </div>
+                    <div className="bg-white p-3 rounded-full shadow-sm text-slate-400">
+                      <WifiOff size={32} />
+                    </div>
+                    <div className="text-center space-y-2">
+                      <p className="font-heading text-lg text-slate-700 uppercase">Magic is Sleeping!</p>
+                      <p className="text-sm font-body font-bold leading-relaxed px-2">
+                        The Wizard needs the internet to cast new spells. Please connect to see the trick!
+                      </p>
+                    </div>
+                  </div>
+                ) : loading ? (
                   <div className="flex flex-col items-center gap-3 sm:gap-4 text-purple-500">
                     <Loader2 className="animate-spin sm:w-12 sm:h-12" size={32} strokeWidth={3} aria-hidden="true" />
                     <span className="font-heading text-base sm:text-lg animate-pulse text-center uppercase tracking-wide">Thinking...</span>
@@ -102,7 +119,7 @@ export const AIModal = ({ isOpen, onClose, onRegenerate, content, loading, title
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 mt-6 sm:mt-8 shrink-0">
-              {onRegenerate && !loading && (
+              {onRegenerate && !loading && !isOffline && (
                 <button 
                   onClick={onRegenerate}
                   className="flex-1 bg-white border-4 border-purple-100 text-purple-500 font-heading text-sm sm:text-base py-3 sm:py-4 rounded-[1.5rem] transition-all hover:bg-purple-50 flex items-center justify-center gap-2"

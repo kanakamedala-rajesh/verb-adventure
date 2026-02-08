@@ -1,21 +1,33 @@
 {
-  "name": "Verb Adventure",
-  "short_name": "VerbAdv",
-  "description": "Master English irregular verbs through fun games!",
+  "name": "Verb Adventure: Irregular Verbs Mastery",
+  "short_name": "Verb Adventure",
+  "description": "Master English irregular verbs through fun games and magic!",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#eff6ff",
   "theme_color": "#3b82f6",
   "icons": [
     {
       "src": "/logo.svg",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
       "src": "/logo.svg",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "scope": "/",
+  "categories": ["education", "games"],
+  "screenshots": []
 }

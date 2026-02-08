@@ -6,6 +6,7 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { verbsData } from '@/lib/verbs';
 import { Mascot } from './Mascot';
 import { HelpModal } from './HelpModal';
+import { useOnlineStatus } from '@/hooks/use-online-status';
 
 interface StartScreenProps {
   onStart: (mode: 'immediate' | 'delayed', count: number, difficulty: 'all' | 'common' | 'advanced') => void;
@@ -22,6 +23,7 @@ interface StartScreenProps {
 }
 
 export const StartScreen = ({ onStart, onStudy, onSoundPop, stats, userName }: StartScreenProps) => {
+  const isOnline = useOnlineStatus();
   const [showExamOptions, setShowExamOptions] = useState(false);
   const [selectedCount, setSelectedCount] = useState(10);
   const [selectedDifficulty, setSelectedDifficulty] = useState<'all' | 'common' | 'advanced'>('all');
@@ -84,6 +86,17 @@ export const StartScreen = ({ onStart, onStudy, onSoundPop, stats, userName }: S
           <p className="text-slate-500 font-body text-base sm:text-2xl font-bold tracking-wide">
             Welcome back, <span className="text-blue-500 underline decoration-blue-200 decoration-4 underline-offset-4">{userName}</span>! ✨
           </p>
+
+          {!isOnline && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mt-4 bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest flex items-center gap-2"
+            >
+              <div className="w-2 h-2 bg-slate-400 rounded-full animate-pulse" />
+              Offline Mode
+            </motion.div>
+          )}
 
           {stats.gamesPlayed > 0 && (
             <motion.div 
@@ -231,7 +244,7 @@ export const StartScreen = ({ onStart, onStudy, onSoundPop, stats, userName }: S
         animate={{ opacity: 0.6 }}
         className="pb-8 pt-4 text-slate-400 font-bold text-xs sm:text-sm tracking-widest z-10"
       >
-        LET'S LEARN TOGETHER! 🚀
+        {"LET'S LEARN TOGETHER! 🚀"}
       </motion.div>
     </div>
   );

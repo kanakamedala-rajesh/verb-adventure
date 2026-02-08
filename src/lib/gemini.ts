@@ -1,6 +1,7 @@
 'use server';
 
 import { logger } from './logger';
+import { headers } from 'next/headers';
 
 const apiKey = process.env.GEMINI_API_KEY;
 
@@ -15,14 +16,17 @@ export async function callGemini(prompt: string) {
     return "AI is currently unavailable. Please check configuration.";
   }
 
-  // Basic rate limiting (per prompt hash or just global for now since we don't have user IDs here)
+  // Rate limiting per IP to avoid noisy neighbor effect
+  const headersList = await headers();
+  const ip = headersList.get('x-forwarded-for') || 'unknown';
+  
   const now = Date.now();
-  const lastCall = lastCallTimestamps.get('global') || 0;
+  const lastCall = lastCallTimestamps.get(ip) || 0;
   if (now - lastCall < COOLDOWN_MS) {
-    logger.warn("Gemini rate limit hit (cooldown active)");
+    logger.warn("Gemini rate limit hit (cooldown active)", { ip });
     return "Whoa there! I'm thinking as fast as I can. Please wait a moment.";
   }
-  lastCallTimestamps.set('global', now);
+  lastCallTimestamps.set(ip, now);
 
   try {
     const response = await fetch(

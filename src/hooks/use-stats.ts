@@ -25,6 +25,7 @@ export function useStats() {
     const savedStats = localStorage.getItem('verb-adventure-stats');
     if (savedStats) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setStats(JSON.parse(savedStats));
       } catch (e) {
         console.error('Failed to load stats', e);

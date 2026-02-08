@@ -9,6 +9,7 @@ export function useUser() {
   useEffect(() => {
     const savedName = localStorage.getItem('verb-adventure-user-name');
     if (savedName) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setName(savedName);
     }
     setIsLoading(false);

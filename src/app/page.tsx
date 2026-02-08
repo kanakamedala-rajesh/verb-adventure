@@ -42,13 +42,17 @@ export default function Home() {
   } = useAudio();
 
   const { stats, updateStats } = useStats();
-  const { name, updateName, isLoading: isUserLoading } = useUser();
+  const { name, updateName, isLoading } = useUser();
   
   const [showSummary, setShowSummary] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const audioProps = { isMuted, toggleMute, playSound, speak, isSpeaking };
+
+  if (isLoading) {
+    return <div className="min-h-screen bg-blue-50" />;
+  }
 
   // --- QUIZ LOGIC ---
 
@@ -187,8 +191,6 @@ export default function Home() {
     setCurrentQuestionIndex(0);
     setGameState('review');
   };
-
-  if (isUserLoading) return <div className="min-h-screen bg-blue-50" />;
 
   return (
     <main className="min-h-screen bg-blue-50 font-body text-slate-800 selection:bg-blue-200 relative overflow-x-hidden">

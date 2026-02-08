@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, X, Star, Sparkles } from 'lucide-react';
 import { Question, Answer } from '@/lib/verbs';
 
 interface QuestionProps {

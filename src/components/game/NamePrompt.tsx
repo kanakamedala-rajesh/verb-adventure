@@ -60,7 +60,7 @@ export const NamePrompt = ({ onConfirm }: NamePromptProps) => {
             disabled={!inputValue.trim()}
             className="w-full bg-orange-500 hover:bg-orange-400 disabled:bg-slate-200 disabled:shadow-none text-white font-heading text-xl py-5 rounded-2xl shadow-[0_6px_0_#ea580c] flex items-center justify-center gap-3 transition-all"
           >
-            LET'S GO! <ArrowRight size={24} />
+            {"LET'S GO!"} <ArrowRight size={24} />
           </motion.button>
         </form>
       </motion.div>
