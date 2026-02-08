@@ -20,7 +20,7 @@ export const HelpModal = ({ isOpen, onClose }: HelpModalProps) => {
             onClick={onClose}
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
           />
-          
+
           <motion.div
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -32,7 +32,7 @@ export const HelpModal = ({ isOpen, onClose }: HelpModalProps) => {
                 <HelpCircle size={28} />
                 <h2 className="text-2xl font-heading uppercase tracking-wide">How to Play</h2>
               </div>
-              <button 
+              <button
                 onClick={onClose}
                 className="hover:bg-white/20 p-2 rounded-full transition-colors"
               >
@@ -48,16 +48,31 @@ export const HelpModal = ({ isOpen, onClose }: HelpModalProps) => {
                 </div>
                 <ul className="space-y-4 text-slate-600 font-body">
                   <li className="flex gap-3">
-                    <span className="bg-blue-100 text-blue-600 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">1</span>
-                    <p><strong>Quick Play:</strong> Jump straight into action with all verbs. Perfect for a quick warm-up!</p>
+                    <span className="bg-blue-100 text-blue-600 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">
+                      1
+                    </span>
+                    <p>
+                      <strong>Quick Play:</strong> Jump straight into action with all verbs. Perfect
+                      for a quick warm-up!
+                    </p>
                   </li>
                   <li className="flex gap-3">
-                    <span className="bg-orange-100 text-orange-600 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">2</span>
-                    <p><strong>Challenge:</strong> Customize your session by choosing difficulty and the number of questions.</p>
+                    <span className="bg-orange-100 text-orange-600 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">
+                      2
+                    </span>
+                    <p>
+                      <strong>Challenge:</strong> Customize your session by choosing difficulty and
+                      the number of questions.
+                    </p>
                   </li>
                   <li className="flex gap-3">
-                    <span className="bg-green-100 text-green-600 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">3</span>
-                    <p><strong>Flashcards:</strong> Take your time to study each {"verb's"} forms and listen to their pronunciation.</p>
+                    <span className="bg-green-100 text-green-600 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs mt-1">
+                      3
+                    </span>
+                    <p>
+                      <strong>Flashcards:</strong> Take your time to study each {"verb's"} forms and
+                      listen to their pronunciation.
+                    </p>
                   </li>
                 </ul>
               </section>
@@ -90,12 +105,22 @@ export const HelpModal = ({ isOpen, onClose }: HelpModalProps) => {
                 </div>
                 <ul className="space-y-4 text-slate-600 font-body text-sm">
                   <li className="flex gap-3">
-                    <span className="bg-blue-100 p-1.5 rounded-lg flex items-center justify-center shrink-0">🚀</span>
-                    <p><strong>Installable:</strong> Add this to your home screen to use it just like a native app!</p>
+                    <span className="bg-blue-100 p-1.5 rounded-lg flex items-center justify-center shrink-0">
+                      🚀
+                    </span>
+                    <p>
+                      <strong>Installable:</strong> Add this to your home screen to use it just like
+                      a native app!
+                    </p>
                   </li>
                   <li className="flex gap-3">
-                    <span className="bg-green-100 p-1.5 rounded-lg flex items-center justify-center shrink-0">📶</span>
-                    <p><strong>Offline Play:</strong> Most features work without internet. Perfect for learning on the go!</p>
+                    <span className="bg-green-100 p-1.5 rounded-lg flex items-center justify-center shrink-0">
+                      📶
+                    </span>
+                    <p>
+                      <strong>Offline Play:</strong> Most features work without internet. Perfect
+                      for learning on the go!
+                    </p>
                   </li>
                 </ul>
               </section>
@@ -107,14 +132,15 @@ export const HelpModal = ({ isOpen, onClose }: HelpModalProps) => {
                 <div>
                   <h3 className="font-heading text-yellow-700 uppercase mb-1">Expert Tip!</h3>
                   <p className="text-yellow-800 text-sm leading-relaxed">
-                    Use the <strong>Review</strong> button at the end of a session to see exactly which verbs you missed and learn from your mistakes!
+                    Use the <strong>Review</strong> button at the end of a session to see exactly
+                    which verbs you missed and learn from your mistakes!
                   </p>
                 </div>
               </section>
             </div>
 
             <div className="p-6 bg-slate-50 border-t border-slate-100 text-center">
-              <button 
+              <button
                 onClick={onClose}
                 className="bg-blue-500 hover:bg-blue-400 text-white font-heading px-12 py-3 rounded-2xl shadow-lg transition-all active:scale-95"
               >

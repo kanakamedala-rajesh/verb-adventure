@@ -28,7 +28,7 @@ export const SettingsModal = ({
   onChangeVoice,
   onChangeSpeed,
   onSoundPop,
-  onSpeak
+  onSpeak,
 }: SettingsModalProps) => {
   return (
     <AnimatePresence>
@@ -52,9 +52,14 @@ export const SettingsModal = ({
           >
             <div className="p-6 sm:p-8 space-y-8">
               <div className="flex items-center justify-between">
-                <h2 className="text-3xl font-heading text-blue-600 uppercase tracking-tight">Settings</h2>
-                <button 
-                  onClick={() => { onSoundPop(); onClose(); }}
+                <h2 className="text-3xl font-heading text-blue-600 uppercase tracking-tight">
+                  Settings
+                </h2>
+                <button
+                  onClick={() => {
+                    onSoundPop();
+                    onClose();
+                  }}
                   className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400"
                 >
                   <X size={32} />
@@ -70,11 +75,16 @@ export const SettingsModal = ({
                     </div>
                     <div>
                       <div className="font-heading text-lg text-slate-700">Sound Effects</div>
-                      <div className="text-sm text-slate-400 font-bold uppercase">Toggle game sounds</div>
+                      <div className="text-sm text-slate-400 font-bold uppercase">
+                        Toggle game sounds
+                      </div>
                     </div>
                   </div>
                   <button
-                    onClick={() => { onSoundPop(); onToggleMute(); }}
+                    onClick={() => {
+                      onSoundPop();
+                      onToggleMute();
+                    }}
                     className={`w-14 h-8 rounded-full transition-all relative ${isMuted ? 'bg-slate-200' : 'bg-blue-500'}`}
                   >
                     <motion.div
@@ -94,15 +104,15 @@ export const SettingsModal = ({
                     {voices.map((voice) => (
                       <button
                         key={voice.voiceURI}
-                        onClick={() => { 
-                          onSoundPop(); 
+                        onClick={() => {
+                          onSoundPop();
                           onChangeVoice(voice.voiceURI);
-                          onSpeak("How does this voice sound?", speed, voice.voiceURI);
+                          onSpeak('How does this voice sound?', speed, voice.voiceURI);
                         }}
                         className={`w-full text-left p-3 rounded-xl border-2 transition-all ${
-                          selectedVoiceURI === voice.voiceURI 
-                          ? 'border-blue-500 bg-blue-50 text-blue-700' 
-                          : 'border-slate-100 hover:border-blue-200 text-slate-600'
+                          selectedVoiceURI === voice.voiceURI
+                            ? 'border-blue-500 bg-blue-50 text-blue-700'
+                            : 'border-slate-100 hover:border-blue-200 text-slate-600'
                         }`}
                       >
                         <div className="font-bold text-sm">{voice.name}</div>
@@ -117,7 +127,9 @@ export const SettingsModal = ({
                   <div className="flex items-center justify-between px-1">
                     <div className="flex items-center gap-2 text-slate-500">
                       <Zap size={18} />
-                      <span className="font-bold text-sm uppercase tracking-wider">Speech Speed</span>
+                      <span className="font-bold text-sm uppercase tracking-wider">
+                        Speech Speed
+                      </span>
                     </div>
                     <span className="font-heading text-blue-600">{speed}x</span>
                   </div>
@@ -128,7 +140,7 @@ export const SettingsModal = ({
                     step="0.1"
                     value={speed}
                     onChange={(e) => onChangeSpeed(parseFloat(e.target.value))}
-                    onPointerUp={() => onSpeak("Testing speed.", speed, selectedVoiceURI)}
+                    onPointerUp={() => onSpeak('Testing speed.', speed, selectedVoiceURI)}
                     className="w-full h-3 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-500"
                   />
                   <div className="flex justify-between text-[10px] text-slate-400 font-bold uppercase px-1">
@@ -140,7 +152,10 @@ export const SettingsModal = ({
               </div>
 
               <button
-                onClick={() => { onSoundPop(); onClose(); }}
+                onClick={() => {
+                  onSoundPop();
+                  onClose();
+                }}
                 className="w-full bg-blue-500 text-white font-heading text-xl py-4 rounded-2xl shadow-[0_6px_0_#2563eb] hover:bg-blue-400 transition-all active:translate-y-1 active:shadow-none uppercase"
               >
                 Save Settings

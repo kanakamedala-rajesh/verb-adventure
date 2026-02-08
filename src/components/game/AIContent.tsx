@@ -32,30 +32,30 @@ export const AIContent = ({ content, audio }: AIContentProps) => {
   // Function to convert markdown (**bold**, *italics*) to highlighted JSX
   const formatText = (text: string) => {
     if (typeof text !== 'string') return text;
-    
+
     // We only use ** and * now to avoid issues with contractions like "it's"
     const parts = text.split(/(\*\*.*?\*\*|\*.*?\*)/);
-    
+
     return parts.map((part, index) => {
       // Handle Bold **text**
       if (part.startsWith('**') && part.endsWith('**')) {
         const innerText = part.slice(2, -2);
         return (
-          <span 
-            key={index} 
+          <span
+            key={index}
             className="font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-lg border border-blue-100 mx-0.5 whitespace-nowrap"
           >
             {innerText}
           </span>
         );
       }
-      
+
       // Handle Italics *text*
       if (part.startsWith('*') && part.endsWith('*')) {
         const innerText = part.slice(1, -1);
         return (
-          <span 
-            key={index} 
+          <span
+            key={index}
             className="font-bold text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded-lg border border-orange-100 mx-0.5 whitespace-nowrap"
           >
             {innerText}
@@ -68,27 +68,29 @@ export const AIContent = ({ content, audio }: AIContentProps) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       className="flex flex-col items-center text-center space-y-4 sm:space-y-6 py-4"
     >
       <div className="relative group">
-        <button 
+        <button
           onClick={() => speak(rawHintText)}
           disabled={isSpeaking}
           className={`p-4 rounded-full text-yellow-600 shadow-sm border-4 border-white relative z-10 transition-all
             ${isSpeaking ? 'bg-yellow-200 scale-110 animate-pulse cursor-not-allowed' : 'bg-yellow-100 hover:scale-110 animate-bounce'}
           `}
-          aria-label={isSpeaking ? "Speaking..." : "Read hint aloud"}
+          aria-label={isSpeaking ? 'Speaking...' : 'Read hint aloud'}
         >
           <Volume2 size={32} className="sm:w-10 sm:h-10" />
         </button>
-        <div className={`absolute inset-0 bg-yellow-400 rounded-full blur-xl transition-opacity
+        <div
+          className={`absolute inset-0 bg-yellow-400 rounded-full blur-xl transition-opacity
           ${isSpeaking ? 'opacity-40 animate-pulse' : 'opacity-20 group-hover:opacity-40'}
-        `} />
+        `}
+        />
       </div>
-      
+
       <div className="space-y-2 px-2">
         <span className="text-[10px] sm:text-xs font-heading text-purple-400 uppercase tracking-[0.2em] block">
           Magic Hint!

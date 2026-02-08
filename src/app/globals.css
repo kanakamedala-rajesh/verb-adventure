@@ -1,9 +1,9 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme inline {
   --font-heading: var(--font-fredoka);
   --font-body: var(--font-quicksand);
-  
+
   --color-brand-blue: #3b82f6;
   --color-brand-green: #22c55e;
   --color-brand-orange: #f97316;
@@ -26,7 +26,12 @@ body {
   cursor: default;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   letter-spacing: normal;
 }

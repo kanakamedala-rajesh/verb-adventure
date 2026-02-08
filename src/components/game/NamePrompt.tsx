@@ -26,7 +26,7 @@ export const NamePrompt = ({ onConfirm }: NamePromptProps) => {
         <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-indigo-400 rounded-full blur-[120px] opacity-50" />
       </div>
 
-      <motion.div 
+      <motion.div
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         className="relative bg-white w-full max-w-md rounded-[3rem] shadow-2xl p-8 sm:p-12 text-center"

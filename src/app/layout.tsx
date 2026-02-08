@@ -1,41 +1,41 @@
-import type { Metadata, Viewport } from "next";
-import { Quicksand, Fredoka } from "next/font/google";
-import "./globals.css";
+import type { Metadata, Viewport } from 'next';
+import { Quicksand, Fredoka } from 'next/font/google';
+import './globals.css';
 
 const fredoka = Fredoka({
-  variable: "--font-fredoka",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  variable: '--font-fredoka',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
 });
 
 const quicksand = Quicksand({
-  variable: "--font-quicksand",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  variable: '--font-quicksand',
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
 });
 
 export const viewport: Viewport = {
-  themeColor: "#3b82f6",
-  width: "device-width",
+  themeColor: '#3b82f6',
+  width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
 };
 
 export const metadata: Metadata = {
-  title: "Verb Adventure | Master Irregular Verbs!",
-  description: "Join the quest to master English verbs through fun games and magic tricks!",
-  manifest: "/manifest.json",
+  title: 'Verb Adventure | Master Irregular Verbs!',
+  description: 'Join the quest to master English verbs through fun games and magic tricks!',
+  manifest: '/manifest.json',
   formatDetection: {
     telephone: false,
   },
   icons: {
-    icon: "/logo.svg",
-    apple: "/logo.svg",
+    icon: '/logo.svg',
+    apple: '/logo.svg',
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
-    title: "Verb Adventure",
+    statusBarStyle: 'default',
+    title: 'Verb Adventure',
   },
 };
 

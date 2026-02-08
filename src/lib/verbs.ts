@@ -78,31 +78,58 @@ export const verbsData: Verb[] = [
   { base: 'wake', simple: 'woke', participle: 'woken', difficulty: 'common' },
   { base: 'wear', simple: 'wore', participle: 'worn', difficulty: 'common' },
   { base: 'write', simple: 'wrote', participle: 'written', difficulty: 'common' },
-  { base: 'lose', simple: 'lost', participle: 'lost', difficulty: 'common' }
+  { base: 'lose', simple: 'lost', participle: 'lost', difficulty: 'common' },
 ];
 
-export const normalize = (text: string) => text ? text.trim().toLowerCase() : '';
+export const normalize = (text: string) => (text ? text.trim().toLowerCase() : '');
 
-export const getRandomDistractors = (correctAnswer: string, type: 'simple' | 'participle', count = 3) => {
-  const others = verbsData
-    .map(v => v[type])
-    .filter(a => a !== correctAnswer);
+export const getRandomDistractors = (
+  correctAnswer: string,
+  type: 'simple' | 'participle',
+  count = 3,
+) => {
+  const others = verbsData.map((v) => v[type]).filter((a) => a !== correctAnswer);
   const shuffled = [...others].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };
 
 export const getRank = (percentage: number) => {
+  if (percentage === 100)
+    return {
+      title: 'Legendary Word Hero',
+      icon: '👑',
+      color: 'text-yellow-500',
+      message: 'PERFECT! You are a word wizard!',
+    };
 
-  if (percentage === 100) return { title: "Legendary Word Hero", icon: "👑", color: "text-yellow-500", message: "PERFECT! You are a word wizard!" };
+  if (percentage >= 80)
+    return {
+      title: 'Super Scholar',
+      icon: '🌟',
+      color: 'text-blue-500',
+      message: 'WOW! You know so many verbs!',
+    };
 
-  if (percentage >= 80) return { title: "Super Scholar", icon: "🌟", color: "text-blue-500", message: "WOW! You know so many verbs!" };
+  if (percentage >= 60)
+    return {
+      title: 'Verb Wizard',
+      icon: '🧙',
+      color: 'text-purple-500',
+      message: 'Great job! Keep it up!',
+    };
 
-  if (percentage >= 60) return { title: "Verb Wizard", icon: "🧙", color: "text-purple-500", message: "Great job! Keep it up!" };
+  if (percentage >= 40)
+    return {
+      title: 'Word Explorer',
+      icon: '🧭',
+      color: 'text-green-500',
+      message: "Good start! You're learning fast!",
+    };
 
-  if (percentage >= 40) return { title: "Word Explorer", icon: "🧭", color: "text-green-500", message: "Good start! You're learning fast!" };
-
-  return { title: "Awesome Beginner", icon: "🌱", color: "text-orange-500", message: "Keep practicing, you can do it!" };
-
+  return {
+    title: 'Awesome Beginner',
+    icon: '🌱',
+    color: 'text-orange-500',
+    message: 'Keep practicing, you can do it!',
+  };
 };
-
-

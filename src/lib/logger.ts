@@ -7,7 +7,7 @@ const LogLevel = {
   ERROR: 'ERROR',
 } as const;
 
-type LogLevel = typeof LogLevel[keyof typeof LogLevel];
+type LogLevel = (typeof LogLevel)[keyof typeof LogLevel];
 
 function formatLog(level: LogLevel, message: string, context?: Record<string, unknown>) {
   return JSON.stringify({

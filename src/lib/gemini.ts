@@ -12,18 +12,18 @@ const COOLDOWN_MS = 2000; // 2 second cooldown per session/ip (simulated here)
 
 export async function callGemini(prompt: string) {
   if (!apiKey) {
-    logger.error("GEMINI_API_KEY is not set in environment variables.");
-    return "AI is currently unavailable. Please check configuration.";
+    logger.error('GEMINI_API_KEY is not set in environment variables.');
+    return 'AI is currently unavailable. Please check configuration.';
   }
 
   // Rate limiting per IP to avoid noisy neighbor effect
   const headersList = await headers();
   const ip = headersList.get('x-forwarded-for') || 'unknown';
-  
+
   const now = Date.now();
   const lastCall = lastCallTimestamps.get(ip) || 0;
   if (now - lastCall < COOLDOWN_MS) {
-    logger.warn("Gemini rate limit hit (cooldown active)", { ip });
+    logger.warn('Gemini rate limit hit (cooldown active)', { ip });
     return "Whoa there! I'm thinking as fast as I can. Please wait a moment.";
   }
   lastCallTimestamps.set(ip, now);
@@ -39,22 +39,24 @@ export async function callGemini(prompt: string) {
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
         }),
-      }
+      },
     );
 
     if (!response.ok) {
-        const err = await response.text();
-        logger.error("AI Request failed", { status: response.status, error: err });
-        throw new Error('AI Request failed');
+      const err = await response.text();
+      logger.error('AI Request failed', { status: response.status, error: err });
+      throw new Error('AI Request failed');
     }
-    
+
     const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate that right now.";
-    
-    logger.info("Gemini AI response generated successfully");
+    const text =
+      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "Sorry, I couldn't generate that right now.";
+
+    logger.info('Gemini AI response generated successfully');
     return text;
   } catch (error) {
-    logger.error("Gemini Error", { error: error instanceof Error ? error.message : String(error) });
-    return "Oops! My AI brain is taking a nap. Please try again later.";
+    logger.error('Gemini Error', { error: error instanceof Error ? error.message : String(error) });
+    return 'Oops! My AI brain is taking a nap. Please try again later.';
   }
 }

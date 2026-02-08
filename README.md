@@ -56,11 +56,12 @@ This project is optimized for deployment on **[Vercel](https://vercel.com)**. Ve
    - `GEMINI_API_KEY`: Your Google AI API key.
 4. **Click Deploy**!
 
-*Note: Deployment to platforms like Firebase Hosting (Free Tier) is not recommended as they do not support the Server-Side Rendering (SSR) required for the AI features.*
+_Note: Deployment to platforms like Firebase Hosting (Free Tier) is not recommended as they do not support the Server-Side Rendering (SSR) required for the AI features._
 
 ## 🧙 Why Verb Adventure?
 
 Traditional verb lists can be boring. Verb Adventure turns learning into a quest, making it easier to remember those tricky irregular forms through repetition, visual feedback, and auditory learning.
 
 ---
-*Created with ❤️ for learners everywhere.*
+
+_Created with ❤️ for learners everywhere._

@@ -8,7 +8,7 @@ interface SoundToggleProps {
 }
 
 export const SoundToggle = ({ onOpenSettings }: SoundToggleProps) => (
-  <motion.button 
+  <motion.button
     whileHover={{ scale: 1.05, backgroundColor: 'rgb(253, 224, 71)' }}
     whileTap={{ scale: 0.95 }}
     onClick={onOpenSettings}

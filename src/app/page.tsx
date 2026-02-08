@@ -19,31 +19,33 @@ import { NamePrompt } from '@/components/game/NamePrompt';
 import { getRank } from '@/lib/verbs';
 
 export default function Home() {
-  const [gameState, setGameState] = useState<'start' | 'study' | 'playing' | 'results' | 'review'>('start'); 
-  const [mode, setMode] = useState<'immediate' | 'delayed' | 'review'>('immediate'); 
+  const [gameState, setGameState] = useState<'start' | 'study' | 'playing' | 'results' | 'review'>(
+    'start',
+  );
+  const [mode, setMode] = useState<'immediate' | 'delayed' | 'review'>('immediate');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  
-  const [allAnswers, setAllAnswers] = useState<Record<number, Answer>>({}); 
-  const [allResults, setAllResults] = useState<Record<number, boolean>>({}); 
-  const [streak, setStreak] = useState(0); 
-  
-  const { 
-    isMuted, 
-    toggleMute, 
-    playSound, 
-    voices, 
-    selectedVoiceURI, 
-    speed, 
-    changeVoice, 
+
+  const [allAnswers, setAllAnswers] = useState<Record<number, Answer>>({});
+  const [allResults, setAllResults] = useState<Record<number, boolean>>({});
+  const [streak, setStreak] = useState(0);
+
+  const {
+    isMuted,
+    toggleMute,
+    playSound,
+    voices,
+    selectedVoiceURI,
+    speed,
+    changeVoice,
     changeSpeed,
     speak,
-    isSpeaking 
+    isSpeaking,
   } = useAudio();
 
   const { stats, updateStats } = useStats();
   const { name, updateName, isLoading } = useUser();
-  
+
   const [showSummary, setShowSummary] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -56,12 +58,16 @@ export default function Home() {
 
   // --- QUIZ LOGIC ---
 
-  const startQuiz = (selectedMode: 'immediate' | 'delayed', count: number, difficulty: 'all' | 'common' | 'advanced' = 'all') => {
+  const startQuiz = (
+    selectedMode: 'immediate' | 'delayed',
+    count: number,
+    difficulty: 'all' | 'common' | 'advanced' = 'all',
+  ) => {
     setMode(selectedMode);
-    
+
     let filteredVerbs = [...verbsData];
     if (difficulty !== 'all') {
-      filteredVerbs = filteredVerbs.filter(v => v.difficulty === difficulty);
+      filteredVerbs = filteredVerbs.filter((v) => v.difficulty === difficulty);
     }
 
     const shuffledVerbs = [...filteredVerbs];
@@ -71,12 +77,12 @@ export default function Home() {
     }
 
     const selectedVerbs = shuffledVerbs.slice(0, count);
-    
-    const newQuestions: Question[] = selectedVerbs.map(verb => {
+
+    const newQuestions: Question[] = selectedVerbs.map((verb) => {
       const rand = Math.random();
-      let type: 'fill' | 'mcq' | 'tf' = 'fill'; 
-      if (rand > 0.4 && rand < 0.75) type = 'mcq'; 
-      if (rand >= 0.75) type = 'tf'; 
+      let type: 'fill' | 'mcq' | 'tf' = 'fill';
+      if (rand > 0.4 && rand < 0.75) type = 'mcq';
+      if (rand >= 0.75) type = 'tf';
 
       const questionData: Question = { id: Math.random().toString(36).substr(2, 9), verb, type };
 
@@ -92,12 +98,12 @@ export default function Home() {
         const isTrue = Math.random() > 0.5;
         const correctAnswer = verb[subType];
         let targetValue = correctAnswer;
-        
+
         if (!isTrue) {
           const [wrong] = getRandomDistractors(correctAnswer, subType, 1);
           targetValue = wrong;
         }
-        
+
         questionData.subType = subType;
         questionData.isTrue = isTrue;
         questionData.targetValue = targetValue;
@@ -105,7 +111,7 @@ export default function Home() {
 
       return questionData;
     });
-    
+
     setQuestions(newQuestions);
     setAllAnswers({});
     setAllResults({});
@@ -117,61 +123,62 @@ export default function Home() {
 
   const handleAnswerChange = (index: number, answerData: Answer) => {
     if (mode === 'review') return;
-    setAllAnswers(prev => ({ ...prev, [index]: answerData }));
+    setAllAnswers((prev) => ({ ...prev, [index]: answerData }));
   };
 
   const calculateResult = (question: Question, answer: Answer) => {
-      if (!answer) return false;
-      if (question.type === 'fill') {
-        const isSimpleCorrect = normalize(answer.simple || '') === normalize(question.verb.simple);
-        const isParticipleCorrect = normalize(answer.participle || '') === normalize(question.verb.participle);
-        return isSimpleCorrect && isParticipleCorrect;
-      } else if (question.type === 'mcq') {
-        return answer.selected === question.correctAnswer;
-      } else if (question.type === 'tf') {
-        const userSaysTrue = answer.selected === 'True';
-        return userSaysTrue === question.isTrue;
-      }
-      return false;
+    if (!answer) return false;
+    if (question.type === 'fill') {
+      const isSimpleCorrect = normalize(answer.simple || '') === normalize(question.verb.simple);
+      const isParticipleCorrect =
+        normalize(answer.participle || '') === normalize(question.verb.participle);
+      return isSimpleCorrect && isParticipleCorrect;
+    } else if (question.type === 'mcq') {
+      return answer.selected === question.correctAnswer;
+    } else if (question.type === 'tf') {
+      const userSaysTrue = answer.selected === 'True';
+      return userSaysTrue === question.isTrue;
+    }
+    return false;
   };
 
   const checkSingleAnswer = (index: number) => {
-      const isCorrect = calculateResult(questions[index], allAnswers[index]);
-      setAllResults(prev => ({ ...prev, [index]: isCorrect }));
-      if (isCorrect) {
-        playSound('correct');
-        setStreak(s => {
-          const newStreak = s + 1;
-          if (newStreak > 1) playSound('streak');
-          return newStreak;
-        });
-      } else {
-        playSound('incorrect');
-        setStreak(0);
-      }
-      return isCorrect;
+    const isCorrect = calculateResult(questions[index], allAnswers[index]);
+    setAllResults((prev) => ({ ...prev, [index]: isCorrect }));
+    if (isCorrect) {
+      playSound('correct');
+      setStreak((s) => {
+        const newStreak = s + 1;
+        if (newStreak > 1) playSound('streak');
+        return newStreak;
+      });
+    } else {
+      playSound('incorrect');
+      setStreak(0);
+    }
+    return isCorrect;
   };
 
   const handleNavigate = (newIndex: number) => {
-      if (newIndex >= 0 && newIndex < questions.length) {
-          setCurrentQuestionIndex(newIndex);
-      } else if (newIndex >= questions.length && mode === 'immediate') {
-           finishQuiz();
-      }
+    if (newIndex >= 0 && newIndex < questions.length) {
+      setCurrentQuestionIndex(newIndex);
+    } else if (newIndex >= questions.length && mode === 'immediate') {
+      finishQuiz();
+    }
   };
 
   const finishQuiz = () => {
     let finalScore = 0;
     if (mode === 'delayed') {
-        const newResults: Record<number, boolean> = {};
-        questions.forEach((_, idx) => {
-            const isCorrect = calculateResult(questions[idx], allAnswers[idx]);
-            newResults[idx] = isCorrect;
-            if (isCorrect) finalScore++;
-        });
-        setAllResults(newResults);
+      const newResults: Record<number, boolean> = {};
+      questions.forEach((_, idx) => {
+        const isCorrect = calculateResult(questions[idx], allAnswers[idx]);
+        newResults[idx] = isCorrect;
+        if (isCorrect) finalScore++;
+      });
+      setAllResults(newResults);
     } else {
-        finalScore = Object.values(allResults).filter(r => r === true).length;
+      finalScore = Object.values(allResults).filter((r) => r === true).length;
     }
 
     // Update stats
@@ -179,7 +186,7 @@ export default function Home() {
     updateStats(finalScore, questions.length, rank.title);
 
     setGameState('results');
-    
+
     if (finalScore >= questions.length * 0.6) {
       setShowConfetti(true);
       setTimeout(() => playSound('win'), 500);
@@ -195,10 +202,10 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-blue-50 font-body text-slate-800 selection:bg-blue-200 relative overflow-x-hidden">
       {!name && <NamePrompt onConfirm={updateName} />}
-      
+
       <SoundToggle onOpenSettings={() => setIsSettingsOpen(true)} />
 
-      <SettingsModal 
+      <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         voices={voices}
@@ -214,67 +221,67 @@ export default function Home() {
 
       <AnimatePresence mode="wait">
         {gameState === 'start' && (
-          <StartScreen 
-            key="start" 
-            onStart={startQuiz} 
-            onStudy={() => setGameState('study')} 
-            onSoundPop={() => playSound('pop')} 
+          <StartScreen
+            key="start"
+            onStart={startQuiz}
+            onStudy={() => setGameState('study')}
+            onSoundPop={() => playSound('pop')}
             stats={stats}
             userName={name || ''}
           />
         )}
-        
+
         {gameState === 'study' && (
-          <StudyScreen 
-            key="study" 
-            onBack={() => setGameState('start')} 
-            onSoundPop={() => playSound('pop')} 
+          <StudyScreen
+            key="study"
+            onBack={() => setGameState('start')}
+            onSoundPop={() => playSound('pop')}
             audio={audioProps}
           />
         )}
-        
+
         {(gameState === 'playing' || gameState === 'review') && (
           <div key="quiz-engine">
-              <QuizScreen 
+            <QuizScreen
+              questions={questions}
+              currentIndex={currentQuestionIndex}
+              allAnswers={allAnswers}
+              allResults={allResults}
+              onAnswerChange={handleAnswerChange}
+              onCheck={checkSingleAnswer}
+              onNavigate={handleNavigate}
+              onFinish={finishQuiz}
+              onExit={() => setGameState('start')}
+              mode={mode}
+              onShowSummary={() => setShowSummary(true)}
+              streak={streak}
+              onSoundPop={() => playSound('pop')}
+              audio={audioProps}
+              userName={name || ''}
+            />
+            <AnimatePresence>
+              {showSummary && (
+                <QuestionPalette
                   questions={questions}
+                  results={allResults}
+                  answers={allAnswers}
                   currentIndex={currentQuestionIndex}
-                  allAnswers={allAnswers}
-                  allResults={allResults}
-                  onAnswerChange={handleAnswerChange}
-                  onCheck={checkSingleAnswer}
-                  onNavigate={handleNavigate}
-                  onFinish={finishQuiz}
-                  onExit={() => setGameState('start')}
-                  mode={mode}
-                  onShowSummary={() => setShowSummary(true)}
-                  streak={streak}
+                  mode={mode === 'review' ? 'immediate' : mode}
+                  onJump={setCurrentQuestionIndex}
+                  onClose={() => setShowSummary(false)}
                   onSoundPop={() => playSound('pop')}
-                  audio={audioProps}
-                  userName={name || ''}
-              />
-              <AnimatePresence>
-                {showSummary && (
-                    <QuestionPalette 
-                        questions={questions}
-                        results={allResults}
-                        answers={allAnswers}
-                        currentIndex={currentQuestionIndex}
-                        mode={mode === 'review' ? 'immediate' : mode}
-                        onJump={setCurrentQuestionIndex}
-                        onClose={() => setShowSummary(false)}
-                        onSoundPop={() => playSound('pop')}
-                    />
-                )}
-              </AnimatePresence>
+                />
+              )}
+            </AnimatePresence>
           </div>
         )}
-        
+
         {gameState === 'results' && (
-          <ResultScreen 
+          <ResultScreen
             key="results"
-            score={Object.values(allResults).filter(r => r === true).length} 
-            total={questions.length} 
-            onRestart={startQuiz} 
+            score={Object.values(allResults).filter((r) => r === true).length}
+            total={questions.length}
+            onRestart={startQuiz}
             onHome={() => setGameState('start')}
             onReview={startReview}
             showConfetti={showConfetti}

@@ -35,8 +35,8 @@ export function useStats() {
 
   const updateStats = (score: number, total: number, rankTitle: string) => {
     const percentage = Math.round((score / total) * 100);
-    
-    setStats(prev => {
+
+    setStats((prev) => {
       const newStats = {
         ...prev,
         bestScore: Math.max(prev.bestScore, percentage),
@@ -45,7 +45,7 @@ export function useStats() {
         gamesPlayed: prev.gamesPlayed + 1,
         lastRank: rankTitle,
       };
-      
+
       localStorage.setItem('verb-adventure-stats', JSON.stringify(newStats));
       return newStats;
     });

@@ -43,7 +43,7 @@ export const useAudio = () => {
     const loadVoices = () => {
       const allVoices = window.speechSynthesis.getVoices();
       // Filter for English voices as they are most relevant for irregular verbs
-      const englishVoices = allVoices.filter(v => v.lang.startsWith('en'));
+      const englishVoices = allVoices.filter((v) => v.lang.startsWith('en'));
       voicesRef.current = allVoices;
       setVoices(englishVoices.length > 0 ? englishVoices : allVoices);
     };
@@ -81,101 +81,116 @@ export const useAudio = () => {
     localStorage.setItem('verbMasterSpeed', JSON.stringify(val));
   }, []);
 
-  const playSound = useCallback((type: 'pop' | 'correct' | 'incorrect' | 'streak' | 'win') => {
-    if (isMuted) return;
-    
-    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    if (!AudioContextClass) return;
-    
-    const audioCtx = new AudioContextClass();
-    const now = audioCtx.currentTime;
+  const playSound = useCallback(
+    (type: 'pop' | 'correct' | 'incorrect' | 'streak' | 'win') => {
+      if (isMuted) return;
 
-    const createOsc = (freq: number, startTime: number, duration: number, oscType: OscillatorType = 'sine', volume = 0.2) => {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = oscType;
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.frequency.setValueAtTime(freq, startTime);
-      gain.gain.setValueAtTime(volume, startTime);
-      gain.gain.linearRampToValueAtTime(0, startTime + duration);
-      osc.start(startTime);
-      osc.stop(startTime + duration);
-    };
+      const AudioContextClass =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioContextClass) return;
 
-    switch (type) {
-      case 'pop':
-        createOsc(400, now, 0.1, 'sine', 0.3);
-        break;
-      case 'correct':
-        createOsc(523.25, now, 0.2, 'sine', 0.2);
-        break;
-      case 'incorrect':
-        createOsc(150, now, 0.2, 'sawtooth', 0.1);
-        break;
-      case 'streak':
-        createOsc(440, now, 0.3, 'sine', 0.1);
-        break;
-      case 'win':
-        [0, 0.1, 0.2].forEach((offset, i) => createOsc(523.25 + (i * 100), now + offset, 0.3));
-        break;
-    }
-  }, [isMuted]);
+      const audioCtx = new AudioContextClass();
+      const now = audioCtx.currentTime;
 
-  const speak = useCallback((text: string, overrideSpeed?: number, overrideVoiceURI?: string | null) => {
-    if (typeof window === 'undefined' || !window.speechSynthesis) return;
-    
-    // Stop current speech
-    window.speechSynthesis.cancel();
-    setIsSpeaking(false);
+      const createOsc = (
+        freq: number,
+        startTime: number,
+        duration: number,
+        oscType: OscillatorType = 'sine',
+        volume = 0.2,
+      ) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = oscType;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(freq, startTime);
+        gain.gain.setValueAtTime(volume, startTime);
+        gain.gain.linearRampToValueAtTime(0, startTime + duration);
+        osc.start(startTime);
+        osc.stop(startTime + duration);
+      };
 
-    // Clean text of markdown
-    const cleanText = text.replace(/\*\*/g, '').replace(/\*/g, '');
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    
-    utterance.rate = overrideSpeed ?? speedRef.current; 
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
+      switch (type) {
+        case 'pop':
+          createOsc(400, now, 0.1, 'sine', 0.3);
+          break;
+        case 'correct':
+          createOsc(523.25, now, 0.2, 'sine', 0.2);
+          break;
+        case 'incorrect':
+          createOsc(150, now, 0.2, 'sawtooth', 0.1);
+          break;
+        case 'streak':
+          createOsc(440, now, 0.3, 'sine', 0.1);
+          break;
+        case 'win':
+          [0, 0.1, 0.2].forEach((offset, i) => createOsc(523.25 + i * 100, now + offset, 0.3));
+          break;
+      }
+    },
+    [isMuted],
+  );
 
-    const allVoices = voicesRef.current.length > 0 ? voicesRef.current : window.speechSynthesis.getVoices();
-    
-    let voice = null;
-    const voiceURI = overrideVoiceURI !== undefined ? overrideVoiceURI : voiceURIRef.current;
+  const speak = useCallback(
+    (text: string, overrideSpeed?: number, overrideVoiceURI?: string | null) => {
+      if (typeof window === 'undefined' || !window.speechSynthesis) return;
 
-    if (voiceURI) {
-      voice = allVoices.find(v => v.voiceURI === voiceURI);
-    }
+      // Stop current speech
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
 
-    if (!voice) {
-      // Fallback logic if selected voice is not available or not yet set
-      voice = 
-        allVoices.find(v => v.name === 'Microsoft Heera - English (India) (en-IN)') ||
-        allVoices.find(v => v.name.includes('Heera')) ||
-        allVoices.find(v => v.name.includes('Google') && v.name.includes('Female')) ||
-        allVoices.find(v => v.lang === 'en-IN') ||
-        allVoices.find(v => v.lang.startsWith('en'));
-    }
+      // Clean text of markdown
+      const cleanText = text.replace(/\*\*/g, '').replace(/\*/g, '');
+      const utterance = new SpeechSynthesisUtterance(cleanText);
 
-    if (voice) utterance.voice = voice;
+      utterance.rate = overrideSpeed ?? speedRef.current;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
 
-    // Track state for UI feedback
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
+      const allVoices =
+        voicesRef.current.length > 0 ? voicesRef.current : window.speechSynthesis.getVoices();
 
-    window.speechSynthesis.speak(utterance);
-  }, []);
+      let voice = null;
+      const voiceURI = overrideVoiceURI !== undefined ? overrideVoiceURI : voiceURIRef.current;
 
-  return { 
-    isMuted, 
-    isSpeaking, 
-    voices, 
-    selectedVoiceURI, 
-    speed, 
-    toggleMute, 
-    changeVoice, 
-    changeSpeed, 
-    playSound, 
-    speak 
+      if (voiceURI) {
+        voice = allVoices.find((v) => v.voiceURI === voiceURI);
+      }
+
+      if (!voice) {
+        // Fallback logic if selected voice is not available or not yet set
+        voice =
+          allVoices.find((v) => v.name === 'Microsoft Heera - English (India) (en-IN)') ||
+          allVoices.find((v) => v.name.includes('Heera')) ||
+          allVoices.find((v) => v.name.includes('Google') && v.name.includes('Female')) ||
+          allVoices.find((v) => v.lang === 'en-IN') ||
+          allVoices.find((v) => v.lang.startsWith('en'));
+      }
+
+      if (voice) utterance.voice = voice;
+
+      // Track state for UI feedback
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = () => setIsSpeaking(false);
+
+      window.speechSynthesis.speak(utterance);
+    },
+    [],
+  );
+
+  return {
+    isMuted,
+    isSpeaking,
+    voices,
+    selectedVoiceURI,
+    speed,
+    toggleMute,
+    changeVoice,
+    changeSpeed,
+    playSound,
+    speak,
   };
 };

@@ -11,20 +11,25 @@ interface MascotProps {
 }
 
 const emojis: Record<Mood, string> = {
-  neutral: "🦁",
-  happy: "🤩",
-  thinking: "🤔",
-  celebrating: "🥳",
-  sad: "😿"
+  neutral: '🦁',
+  happy: '🤩',
+  thinking: '🤔',
+  celebrating: '🥳',
+  sad: '😿',
 };
 
 const getMessage = (mood: Mood, name: string) => {
   switch (mood) {
-    case 'happy': return `Great job, ${name}!`;
-    case 'celebrating': return `You're a star, ${name}!`;
-    case 'thinking': return `You got this, ${name}!`;
-    case 'sad': return `Don't give up, ${name}!`;
-    default: return `Hi, ${name}!`;
+    case 'happy':
+      return `Great job, ${name}!`;
+    case 'celebrating':
+      return `You're a star, ${name}!`;
+    case 'thinking':
+      return `You got this, ${name}!`;
+    case 'sad':
+      return `Don't give up, ${name}!`;
+    default:
+      return `Hi, ${name}!`;
   }
 };
 
@@ -46,23 +51,23 @@ export const Mascot = ({ mood, userName, message }: MascotProps) => {
           </motion.div>
         )}
       </AnimatePresence>
-      <motion.div 
+      <motion.div
         initial={{ scale: 0.8, y: 10 }}
-        animate={{ 
-          scale: 1, 
+        animate={{
+          scale: 1,
           y: [0, -5, 0],
         }}
         transition={{
           y: {
             duration: 2,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: 'easeInOut',
           },
           scale: {
-            type: "spring",
+            type: 'spring',
             stiffness: 260,
-            damping: 20
-          }
+            damping: 20,
+          },
         }}
         className="bg-white p-2 rounded-full shadow-md text-3xl sm:text-4xl border-4 border-yellow-300 z-10 cursor-default"
       >
