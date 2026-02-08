@@ -1,0 +1,35 @@
+{
+  "hooks": {
+    "BeforeAgent": [
+      {
+        "name": "Dependency Check",
+        "description": "Ensures node_modules are present before starting.",
+        "matcher": ".*",
+        "hooks": [
+          {
+            "name": "check-deps",
+            "type": "command",
+            "command": "$GEMINI_PROJECT_DIR/.gemini/hooks/check-deps.sh",
+            "description": "Checks for node_modules and suggests npm install if missing."
+          }
+        ]
+      }
+    ],
+    "AfterAgent": [
+      {
+        "name": "Project Validation",
+        "description": "Final validation after agent completes its task.",
+        "matcher": ".*",
+        "sequential": true,
+        "hooks": [
+          {
+            "name": "full-validation",
+            "type": "command",
+            "command": "$GEMINI_PROJECT_DIR/.gemini/hooks/validate.sh",
+            "description": "Runs npm run commit:validate (lint, type-check, and build)."
+          }
+        ]
+      }
+    ]
+  }
+}
